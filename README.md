@@ -87,3 +87,83 @@ onTap: () {
                 content: Text("Kamu telah menekan tombol ${item.name}!")));
         },
 ```
+
+## Tugas 8: Flutter Navigation, Layouts, Forms, and Input Elements
+
+### `const` pada Flutter
+- **Kegunaan:** Kata kunci `const` digunakan di Flutter untuk menunjukkan bahwa objek atau widget yang dibuat bersifat konstan atau tidak berubah *(immutable)*. Ini membantu compiler Flutter untuk melakukan optimasi saat membangun aplikasi, karena objek `const` hanya perlu dibuat sekali dan bisa digunakan kembali tanpa perlu di-render ulang.
+
+- **Keuntungan:**
+  - Meningkatkan kinerja aplikasi, karena Flutter tidak perlu membuat ulang objek yang sama setiap kali widget di-render.
+
+  - Mengurangi penggunaan memori karena objek yang sama bisa dipakai berulang kali jika tidak ada perubahan.
+
+- **Kapan Menggunakan `const`:** Gunakan `const` ketika widget atau nilai yang Anda buat tidak berubah selama *runtime* aplikasi. Misalnya, teks, ikon, atau widget statis yang tidak akan diperbarui.
+
+- **Kapan Tidak Menggunakan const:** Jangan gunakan `const` jika nilai widget akan berubah selama *runtime*, karena ini akan menyebabkan error.
+
+### Column and Row pada Flutter
+
+- **Column** dan **Row** adalah widget tata letak di Flutter yang memungkinkan Anda mengatur widget secara vertikal (Column) atau horizontal (Row).
+
+  - **Column:** Mengatur widget anak (child) dalam bentuk kolom, dari atas ke bawah. Inisiasi Column dengan cara:
+
+  ``` bash
+  child: Column(
+    ...
+  )
+  ```
+
+  - **Row:** Mengatur widget anak secara horizontal, dari kiri ke kanan. Inisiasi Row dengan:
+
+  ``` bash
+  child: Row(
+    ...
+  )
+  ```
+
+### Elemen Input yang Digunakan dan Alternatifnya
+
+- Elemen Input yang Digunakan: Pada halaman form tugas kali ini, elemen yang digunakan adalah:
+  - `TextFormField`: Untuk input teks seperti nama kerajinan, deskripsi, dan harga.
+  - `ElevatedButton`: Untuk tombol aksi seperti tombol "Save".
+
+- Alternatif Elemen Input yang Tidak Digunakan:
+  - `DropdownButton`: Menyediakan pilihan dari daftar drop-down.
+  - `Checkbox` dan `Switch`: Untuk input boolean seperti pilihan Ya/Tidak.
+  - `Slider`: Untuk memilih nilai dari rentang tertentu.
+
+    - Penjelasan: Elemen-elemen ini tidak digunakan karena form saat ini hanya memerlukan input teks dan tombol untuk menyimpan data, tanpa opsi lain atau kontrol boolean.
+
+### Pengaturan Tema dalam Aplikasi Flutter
+
+- **Pengaturan Tema**: Tema di Flutter dapat diatur di kelas utama dengan menggunakan `ThemeData`, yang diterapkan di seluruh aplikasi untuk memberikan konsistensi warna, gaya teks, dan elemen UI lainnya.
+
+  - Contoh:
+  ``` bash
+  theme: ThemeData(
+          colorScheme: ColorScheme.fromSwatch(
+                primarySwatch: Colors.grey,
+          ).copyWith(secondary: Colors.grey[400]),
+        ),
+  ```
+
+Jika sudah diterapkan, maka aplikasi akan memiliki gaya konsisten. Jika belum, pertimbangkan untuk menambahkan pengaturan tema untuk kemudahan perubahan tampilan secara global.
+
+### Penanganan Navigasi pada Aplikasi dengan Banyak Halaman di Flutter
+
+- **Cara Menangani Navigasi:** Flutter menggunakan Navigator untuk mengatur navigasi antar halaman. Anda bisa menggunakan metode seperti `push`, `pop`, dan `pushReplacement` untuk mengelola pergerakan antar halaman.
+
+  - Contoh:
+  ``` bash
+  // Navigasi ke halaman baru
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => NewPage()),
+  );
+
+  // Navigasi kembali ke halaman sebelumnya
+  Navigator.pop(context);
+  ```
+
+Untuk page dengan jumlah banyak, gunakan `routes` di `MaterialApp` untuk mendefinisikan semua halaman di awal dan gunakan `Navigator` untuk navigasi antar halaman.
