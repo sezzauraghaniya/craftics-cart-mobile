@@ -1,3 +1,4 @@
+import 'package:craftics_cart_mobile/screens/list_craftentry.dart';
 import 'package:flutter/material.dart';
 import 'package:craftics_cart_mobile/screens/menu.dart';
 // TODO: Impor halaman MoodEntryFormPage jika sudah dibuat
@@ -59,6 +60,16 @@ class LeftDrawer extends StatelessWidget {
                 setelah halaman MoodEntryFormPage sudah dibuat.
                 */
               },
+            ),
+            ListTile(
+            leading: const Icon(Icons.add_reaction_rounded),
+            title: const Text('Daftar Craft'),
+            onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const CraftEntryPage()),
+                    );
+                },
             ),
         ],
       ),
