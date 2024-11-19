@@ -167,3 +167,56 @@ Jika sudah diterapkan, maka aplikasi akan memiliki gaya konsisten. Jika belum, p
   ```
 
 Untuk page dengan jumlah banyak, gunakan `routes` di `MaterialApp` untuk mendefinisikan semua halaman di awal dan gunakan `Navigator` untuk navigasi antar halaman.
+
+## Tugas 9: Integrasi Layanan Web Django dengan Aplikasi Flutter
+
+### JSON Models
+
+Membuat model untuk pengambilan dan pengiriman data JSON adalah penting karena model ini berfungsi sebagai cetak biru untuk struktur data. Tanpa model, kita akan kesulitan memastikan konsistensi dan validitas data yang diterima atau dikirim. Ini bisa menyebabkan berbagai error seperti kesalahan parsing atau ketidakcocokan tipe data. Model juga membantu dalam dokumentasi dan pemeliharaan kode, membuatnya lebih mudah dipahami dan dikelola.
+
+### Fungsi `http` pada Flutter
+
+- Mengirimkan permintaan ke server **(GET, POST, PUT, DELETE)**.
+
+- Mendukung pengaturan `header` dan `body` dalam permintaan.
+
+- Menguraikan respons dari server (misalnya konversi JSON menjadi objek Dart).
+
+- Menangani error yang mungkin terjadi selama proses permintaan. Ini memudahkan aplikasi Flutter untuk berkomunikasi dengan API atau layanan web eksternal.
+
+### `CookieRequest` pada Flutter
+
+Menyimpan dan mengirimkan cookies dalam setiap permintaan HTTP setelah login.
+
+Menangani autentikasi dan otorisasi pengguna. Instance CookieRequest perlu dibagikan ke semua komponen di aplikasi untuk memastikan semua permintaan yang memerlukan autentikasi menggunakan sesi yang sama, sehingga pengguna tidak perlu login berulang kali.
+
+### Mekanisme pengiriman data mulai dari input hingga dapat ditampilkan pada Flutter
+
+- Input Data: Pengguna memasukkan data melalui UI aplikasi Flutter.
+
+- Permintaan HTTP: Data dikirimkan ke server melalui permintaan HTTP menggunakan library http.
+
+- Pengolahan di Server: Server (misalnya Django) menerima dan memproses data, kemudian mengirimkan respons dalam format JSON.
+
+- Parsing Data: Aplikasi Flutter menerima dan menguraikan respons (JSON ke objek Dart).
+
+- Menampilkan Data: Data yang sudah diuraikan ditampilkan kembali ke UI aplikasi Flutter.
+
+### Mekanisme autentikasi dari login, register, hingga logout
+
+- Login:
+  - Pengguna memasukkan kredensial pada aplikasi Flutter.
+  - Aplikasi mengirimkan permintaan login (POST) ke server Django.
+  - Django memverifikasi kredensial dan jika valid, server mengembalikan token autentikasi atau cookie sesi.
+  - Aplikasi menyimpan token/cookie untuk digunakan dalam permintaan berikutnya.
+
+- Register:
+  - Pengguna mengisi form registrasi pada aplikasi Flutter.
+  - Aplikasi mengirimkan data registrasi (POST) ke server Django.
+  - Django memproses data dan membuat akun baru. Setelah sukses, server mengirimkan respons yang relevan.
+
+- Logout:
+  - Pengguna memilih opsi logout pada aplikasi Flutter.
+  - Aplikasi mengirimkan permintaan logout (POST/DELETE) ke server Django.
+  - Django menghapus token autentikasi atau sesi.
+  - Aplikasi menghapus token/cookie dari storage lokal dan mengarahkan pengguna kembali ke halaman login
