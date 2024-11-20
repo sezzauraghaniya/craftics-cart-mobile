@@ -16,8 +16,9 @@ class CraftEntryFormPage extends StatefulWidget {
 class _CraftEntryFormPageState extends State<CraftEntryFormPage> {
   final _formKey = GlobalKey<FormState>();
   String _craft = "";
-	String _description = "";
-	int _craftprice = 0;
+  String _description = "";
+  int _craftprice = 0;
+  int _stock = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -36,33 +37,33 @@ class _CraftEntryFormPageState extends State<CraftEntryFormPage> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: "Craft Name",
-                    labelText: "Craft Name",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Craft Name",
+                  labelText: "Craft Name",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
                   ),
-                  onChanged: (String? value) {
-                    setState(() {
-                      _craft = value!;
-                    });
-                  },
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return "Nama Craft tidak boleh kosong!";
-                    }
-                    return null;
-                  },
                 ),
+                onChanged: (String? value) {
+                  setState(() {
+                    _craft = value!;
+                  });
+                },
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Nama Craft tidak boleh kosong!";
+                  }
+                  return null;
+                },
               ),
-              Padding(
+            ),
+            Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 decoration: InputDecoration(
@@ -107,8 +108,37 @@ class _CraftEntryFormPageState extends State<CraftEntryFormPage> {
                   if (int.tryParse(value) == null) {
                     return "Harga harus berupa angka!";
                   }
-                  if (int.tryParse(value)!  <= 0) {
+                  if (int.tryParse(value)! <= 0) {
                     return "Harga harus berupa angka positif!";
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Stok",
+                  labelText: "Stok",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+                onChanged: (String? value) {
+                  setState(() {
+                    _craftprice = int.tryParse(value!) ?? 0;
+                  });
+                },
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Stok tidak boleh kosong!";
+                  }
+                  if (int.tryParse(value) == null) {
+                    return "Stok harus berupa angka!";
+                  }
+                  if (int.tryParse(value)! <= 0) {
+                    return "Stok harus berupa angka positif!";
                   }
                   return null;
                 },
@@ -119,52 +149,54 @@ class _CraftEntryFormPageState extends State<CraftEntryFormPage> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.green), // Ubah warna ke hijau
-                ),
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        Colors.green), // Ubah warna ke hijau
+                  ),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
                       // Kirim ke Django dan tunggu respons
                       // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
                       final response = await request.postJson(
-                          "http://127.0.0.1:8000/create-flutter/",
-                          jsonEncode(<String, String>{
-                              'name': _craft,
-                              'description': _description.toString(),
-                              'price': _craftprice.toString(),
+                        "http://127.0.0.1:8000/create-flutter/",
+                        jsonEncode(<String, String>{
+                          'name': _craft,
+                          'description': _description.toString(),
+                          'price': _craftprice.toString(),
+                          'stock': _stock.toString(),
                           // TODO: Sesuaikan field data sesuai dengan aplikasimu
-                          }),
+                        }),
                       );
                       if (context.mounted) {
-                          if (response['status'] == 'success') {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                              content: Text("Mood baru berhasil disimpan!"),
-                              ));
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => MyHomePage()),
-                              );
-                          } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                  content:
-                                      Text("Terdapat kesalahan, silakan coba lagi."),
-                              ));
-                          }
+                        if (response['status'] == 'success') {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text("Mood baru berhasil disimpan!"),
+                          ));
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MyHomePage()),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content:
+                                Text("Terdapat kesalahan, silakan coba lagi."),
+                          ));
+                        }
                       }
-                  }
-              },
-                child: const Text(
-                  "Save",
-                  style: TextStyle(color: Colors.white),
+                    }
+                  },
+                  child: const Text(
+                    "Save",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
               ),
             ),
           ],
-          )
-        ),
+        )),
       ),
     );
   }

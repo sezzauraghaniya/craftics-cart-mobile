@@ -75,6 +75,8 @@ class _CraftEntryPageState extends State<CraftEntryPage> {
                       Text("${snapshot.data![index].fields.price}"),
                       const SizedBox(height: 10),
                       Text("${snapshot.data![index].fields.description}"),
+                      const SizedBox(height: 10),
+                      Text("${snapshot.data![index].fields.stock}"),
                     ],
                   ),
                 ),
